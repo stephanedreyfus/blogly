@@ -3,12 +3,12 @@
 {% block title %}Add User{% endblock %}
 
 {% block content %}
-    <form action="/users">
-        <label for="first_name"></label>
+    <form action="/users" method="post">
+        <label for="firstName">First Name</label>
         <input type="text" name="first_name" id="firstName">
-        <label for="last_name"></label>
+        <label for="lastName">Last Name</label>
         <input type="text" name="last_name" id="lastName">
-        <label for="img_url"></label>
+        <label for="imgUrl">Image URL</label>
         <input type="text" name="img_url" id="imgUrl">
         <button type="submit">Add User!</button>
     </form>
