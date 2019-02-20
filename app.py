@@ -14,3 +14,8 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 # db.create_all()
+
+
+@app.route('/users/new')
+def add_user_form():
+    return render_template("add_user_form.html")
