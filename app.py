@@ -71,7 +71,8 @@ def user_page(id):
 @app.route('/users/<int:id>/delete', methods=["POST"])
 def delete_user(id):
     ''' delete user '''
-    User.query.filter(User.id == id).delete()
+    found_user = User.query.get(id)
+    db.session.delete(found_user)
     db.session.commit()
 
     return redirect('/users')
@@ -88,3 +89,18 @@ def edit_user_page(id):
                            first_name=user.first_name,
                            last_name=user.last_name,
                            img_url=user.img_url)
+
+
+@app.route('/users/<int:id>/edit', methods=['POST'])
+def edit_user_info(id):
+    ''' Update user information'''
+
+    user = User.query.get(id)
+    
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.img_url = request.form.get('img_url') or None
+
+    db.session.commit()
+
+    return redirect('/users')
