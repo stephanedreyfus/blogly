@@ -16,13 +16,21 @@ connect_db(app)
 # db.create_all()
 
 
+@app.route('/')
+def redirect_to_users():
+    '''redirect to list of users'''
+    return redirect('/users')
+
+
 @app.route('/users/new')
 def add_user_form():
+    '''shows add user form'''
     return render_template("add_user_form.html")
 
 
 @app.route('/users', methods=['POST'])
 def process_user_form():
+    '''gather data from from and send to database'''
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     img_url = request.form.get('img_url')
@@ -35,3 +43,13 @@ def process_user_form():
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.route('/users')
+def show_list_of_users():
+    ''' shows all users with links to their profiles, have button
+    to go to add user form page '''
+
+    user_list = db.session.query(User.id, User.first_name, User.last_name).all()
+
+    return render_template('users_list.html', user_list=user_list)

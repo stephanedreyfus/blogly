@@ -29,3 +29,7 @@ class User(db.Model):
     img_url = db.Column(db.Text,
                         nullable=False,
                         default='')
+
+    def __repr__(self):
+        
+        return f'<User {self.first_name} {self.last_name} {self.img_url}>'
