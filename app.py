@@ -96,7 +96,7 @@ def edit_user_info(id):
     ''' Update user information'''
 
     user = User.query.get(id)
-    
+
     user.first_name = request.form['first_name']
     user.last_name = request.form['last_name']
     user.img_url = request.form.get('img_url') or None
@@ -104,3 +104,17 @@ def edit_user_info(id):
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.route('/user/{int:id>/posts/new')
+def add_post(id):
+    ''' Shows form to write post '''
+
+    user = User.query.get(id)
+
+    return render_template('add_post_form.html',
+                           id=user.id,
+                           first_name=user.first_name,
+                           last_name=user.last_name)
+
+
