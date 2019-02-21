@@ -68,3 +68,12 @@ def user_page(id):
                            first_name=user.first_name,
                            last_name=user.last_name,
                            img_url=user.img_url)
+
+
+@app.route('/users/<int:id>/delete', methods=["POST"])
+def delete_user(id):
+    ''' delete user '''
+    User.query.filter(User.id == id).delete()
+    db.session.commit()
+
+    return redirect('/users')
