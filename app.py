@@ -49,9 +49,9 @@ def process_user_form():
 def show_list_of_users():
     ''' shows all users with links to their profiles, have button
     to go to add user form page '''
-
-    user_list = User.query.all()
-
+    
+    user_list = User.query.order_by(User.id.desc()).all()
+    
     return render_template('users_list.html', user_list=user_list)
 
 
@@ -61,7 +61,7 @@ def user_page(id):
 
     user = User.query.get(id)
     posts = user.posts
-
+    
     return render_template('user_page.html',
                            id=user.id,
                            first_name=user.first_name,
@@ -139,10 +139,22 @@ def commit_post(id):
 
 @app.route('/posts/<int:post_id>')
 def show_post(post_id):
+    ''' show post with delete, back, and edit buttons'''
 
     post = Post.query.get(post_id)
     user = post.user
 
     return render_template('read_post.html',
-                    user=user,
-                    post=post)
+                           user=user,
+                           post=post)
+
+
+@app.route('/posts/<int:post_id>/delete', methods=["POST"])
+def delete_post(post_id):
+    ''' post deletion'''
+    found_post = Post.query.get(post_id)
+
+    db.session.delete(found_post)
+    db.session.commit()
+
+    return redirect(f'/users/{found_post.user_id}')
