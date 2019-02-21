@@ -135,3 +135,14 @@ def commit_post(id):
     db.session.commit()
 
     return redirect(f'/users/{id}')
+
+
+@app.route('/posts/<int:post_id>')
+def show_post(post_id):
+
+    post = Post.query.get(post_id)
+    user = post.user
+
+    return render_template('read_post.html',
+                    user=user,
+                    post=post)
