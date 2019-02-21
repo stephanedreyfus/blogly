@@ -75,3 +75,16 @@ def delete_user(id):
     db.session.commit()
 
     return redirect('/users')
+
+
+@app.route('/users/<int:id>/edit')
+def edit_user_page(id):
+    ''' Show user details for editing '''
+
+    user = User.query.get(id)
+
+    return render_template('edit_user_page.html',
+                           id=user.id,
+                           first_name=user.first_name,
+                           last_name=user.last_name,
+                           img_url=user.img_url)

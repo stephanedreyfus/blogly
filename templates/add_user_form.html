@@ -3,13 +3,14 @@
 {% block title %}Add User{% endblock %}
 
 {% block content %}
-    <form action="/users" method="post">
+    <h1>{% block h1 %}Add User{% endblock %}</h1>
+    <form action="{% block action %}/users{% endblock %}" method="post">
         <label for="firstName">First Name</label>
-        <input type="text" name="first_name" id="firstName">
+        <input type="text" name="first_name" id="firstName" value="{% block first_name_value %}{% endblock %}">
         <label for="lastName">Last Name</label>
-        <input type="text" name="last_name" id="lastName">
+        <input type="text" name="last_name" id="lastName" value="{% block last_name_value %}{% endblock %}">
         <label for="imgUrl">Image URL</label>
-        <input type="text" name="img_url" id="imgUrl">
-        <button type="submit">Add User!</button>
+        <input type="text" name="img_url" id="imgUrl" value="{% block img_url_value %}{% endblock %}">
+        {% block button %}<button type="submit">Add User!</button>{% endblock %}
     </form>
 {% endblock %}

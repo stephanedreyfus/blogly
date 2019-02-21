@@ -1,0 +1,18 @@
+{% extends 'add_user_form.html' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block h1 %}Edit User{% endblock %}
+
+{% block action %}/users/{{ id }}/edit{% endblock %}
+
+{% block first_name_value %}{{ first_name }}{% endblock %}
+
+{% block last_name_value %}{{ last_name }}{% endblock %}
+
+{% block img_url_value %}{{ img_url }}{% endblock %}
+
+{% block button %}
+    <button type="submit">Save Changes</button>
+    <a href="/users/{{ id }}">Cancel</a>
+{% endblock %}
