@@ -50,9 +50,7 @@ def show_list_of_users():
     ''' shows all users with links to their profiles, have button
     to go to add user form page '''
 
-    user_list = db.session.query(User.id,
-                                 User.first_name,
-                                 User.last_name).all()
+    user_list = User.query.all()
 
     return render_template('users_list.html', user_list=user_list)
 
