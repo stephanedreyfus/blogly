@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -106,7 +106,7 @@ def edit_user_info(id):
     return redirect('/users')
 
 
-@app.route('/user/{int:id>/posts/new')
+@app.route('/user/<int:id>/posts/new')
 def add_post(id):
     ''' Shows form to write post '''
 
@@ -118,3 +118,18 @@ def add_post(id):
                            last_name=user.last_name)
 
 
+@app.router('/user/<int:id>/post', methods=["POST"])
+def commit_post(id):
+    ''' submits post to database '''
+
+    title = request.form['title']
+    content = request.form['content']
+
+    new_post = Post(title=title,
+                    content=content,
+                    user_id=id)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect('/users/<int:id>')
