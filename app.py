@@ -60,12 +60,14 @@ def user_page(id):
     ''' Dynamically shows user pages. '''
 
     user = User.query.get(id)
+    posts = user.posts
 
     return render_template('user_page.html',
                            id=user.id,
                            first_name=user.first_name,
                            last_name=user.last_name,
-                           img_url=user.img_url)
+                           img_url=user.img_url,
+                           posts=posts)
 
 
 @app.route('/users/<int:id>/delete', methods=["POST"])
@@ -106,7 +108,7 @@ def edit_user_info(id):
     return redirect('/users')
 
 
-@app.route('/user/<int:id>/posts/new')
+@app.route('/users/<int:id>/posts/new')
 def add_post(id):
     ''' Shows form to write post '''
 
@@ -118,12 +120,12 @@ def add_post(id):
                            last_name=user.last_name)
 
 
-@app.router('/user/<int:id>/post', methods=["POST"])
+@app.route('/users/<int:id>/post', methods=["POST"])
 def commit_post(id):
     ''' submits post to database '''
 
-    title = request.form['title']
-    content = request.form['content']
+    title = request.form['post_title']
+    content = request.form['post_content']
 
     new_post = Post(title=title,
                     content=content,
@@ -132,4 +134,4 @@ def commit_post(id):
     db.session.add(new_post)
     db.session.commit()
 
-    return redirect('/users/<int:id>')
+    return redirect(f'/users/{id}')

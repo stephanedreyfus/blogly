@@ -58,7 +58,7 @@ class Post(db.Model):
                            default=datetime.now())
 
     user_id = db.Column(db.Integer,
-                        db.Foreignkey('users.id'),
+                        db.ForeignKey('users.id'),
                         nullable=False)
 
     def __repr__(self):
