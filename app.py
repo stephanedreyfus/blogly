@@ -219,3 +219,42 @@ def add_tag():
     ''' Add a new blog tag '''
 
     return render_template('create_tag_form.html')
+
+
+@app.route('/tags/<int:tag_id>')
+def display_tag_info(tag_id):
+    ''' display tag info '''
+
+    tag = Tag.query.get(tag_id)
+
+    return render_template('tag_info.html', tag=tag)
+
+
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag_form(tag_id):
+
+    tag = Tag.query.get(tag_id)
+
+    return render_template('edit_tag_form.html', tag=tag)
+
+
+@app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+def submit_tag_edit(tag_id):
+
+    tag = Tag.query.get(tag_id)
+
+    tag.name = request.form["tag_name"]
+
+    db.session.commit()
+
+    return redirect('/tags')
+
+
+@app.route('/tags/<int:tag_id>/delete', methods=["POST"])
+def delete_tag(tag_id):
+
+    tag = Tag.query.get(tag_id)
+    db.session.delete(tag)
+    db.session.commit()
+
+    return redirect('/tags')
