@@ -24,6 +24,7 @@ def redirect_to_users():
 ##############################################################################
 # USERS
 
+
 @app.route('/users/new')
 def add_user_form():
     '''shows add user form'''
@@ -48,13 +49,14 @@ def process_user_form():
 
 ###############################
 
+
 @app.route('/users')
 def show_list_of_users():
     ''' shows all users with links to their profiles, have button
     to go to add user form page '''
-    
+
     user_list = User.query.order_by(User.id.desc()).all()
-    
+
     return render_template('users_list.html', user_list=user_list)
 
 
@@ -64,7 +66,7 @@ def user_page(id):
 
     user = User.query.get(id)
     posts = Post.query.filter(Post.user_id == id).order_by(Post.id.desc()).all()
-    
+
     return render_template('user_page.html',
                            id=user.id,
                            first_name=user.first_name,
@@ -101,7 +103,6 @@ def edit_user_info(id):
     ''' Update user information'''
 
     user = User.query.get(id)
-
 
     user.first_name = request.form['first_name'] or None
     user.last_name = request.form['last_name'] or None
@@ -197,3 +198,24 @@ def list_tags():
     tags = Tag.query.all()
 
     return render_template('tag_list.html', tags=tags)
+
+
+@app.route('/tags', methods=["POST"])
+def process_tag_form():
+    ''' Add new tag to databse '''
+
+    tag_name = request.form['tag_name']
+
+    new_tag = Tag(name=tag_name)
+
+    db.session.add(new_tag)
+    db.session.commit()
+
+    return redirect(f'/tags')
+
+
+@app.route('/tags/new')
+def add_tag():
+    ''' Add a new blog tag '''
+
+    return render_template('create_tag_form.html')
