@@ -21,6 +21,8 @@ def redirect_to_users():
     '''redirect to list of users'''
     return redirect('/users')
 
+##############################################################################
+# USERS
 
 @app.route('/users/new')
 def add_user_form():
@@ -44,6 +46,7 @@ def process_user_form():
 
     return redirect('/users')
 
+###############################
 
 @app.route('/users')
 def show_list_of_users():
@@ -60,7 +63,7 @@ def user_page(id):
     ''' Dynamically shows user pages. '''
 
     user = User.query.get(id)
-    posts = user.posts
+    posts = Post.query.filter(Post.user_id == id).order_by(Post.id.desc()).all()
     
     return render_template('user_page.html',
                            id=user.id,
@@ -99,8 +102,9 @@ def edit_user_info(id):
 
     user = User.query.get(id)
 
-    user.first_name = request.form['first_name']
-    user.last_name = request.form['last_name']
+
+    user.first_name = request.form['first_name'] or None
+    user.last_name = request.form['last_name'] or None
     user.img_url = request.form.get('img_url') or None
 
     db.session.commit()

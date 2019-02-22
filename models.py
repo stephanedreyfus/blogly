@@ -55,7 +55,7 @@ class Post(db.Model):
                         nullable=False)
 
     created_at = db.Column(db.DateTime,
-                           default=datetime.now())
+                           default=datetime.now)
 
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
