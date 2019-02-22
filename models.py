@@ -44,6 +44,8 @@ class Post(db.Model):
 
     user = db.relationship('User', backref='posts')
 
+    posts_tags = db.relationship('PostTag', backref='posts')
+
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
@@ -64,3 +66,35 @@ class Post(db.Model):
     def __repr__(self):
 
         return f'''<Post {self.id} {self.title} {self.created_at}>'''
+
+
+class Tag(db.Model):
+    ''' Tanle of blog tags '''
+
+    __tablename__ = "tags"
+
+    posts_tags = db.relationship('PostTag', backref='tags')
+
+    posts = db.relationship('Post', secondary='posts_tags', backref='tags')
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+
+    name = db.Column(db.String(20),
+                     unique=True,
+                     nullable=False)
+
+
+class PostTag(db.Model):
+    ''' Table of associated posts and tags '''
+
+    __tablename__ = "posts_tags"
+
+    post_id = db.Column(db.Integer,
+                        db.ForeignKey("posts.id"),
+                        primary_key=True)
+
+    tag_id = db.Column(db.Integer,
+                       db.ForeignKey("tags.id"),
+                       primary_key=True)
