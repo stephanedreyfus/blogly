@@ -158,3 +158,26 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f'/users/{found_post.user_id}')
+
+
+@app.route('/posts/<int:post_id>/edit')
+def edit_post_form(post_id):
+    ''' show form for editting post '''
+
+    post = Post.query.get(post_id)
+
+    return render_template('edit_post_form.html', post=post)
+
+
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def modify_post(post_id):
+
+    post = Post.query.get(post_id)
+
+    post.title = request.form['post_title']
+    post.content = request.form['post_content']
+    post.created_by = None
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
