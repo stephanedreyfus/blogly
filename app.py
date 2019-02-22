@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -185,3 +185,15 @@ def modify_post(post_id):
     db.session.commit()
 
     return redirect(f'/posts/{post_id}')
+
+
+#############################################################
+# Tags!
+
+@app.route('/tags')
+def list_tags():
+    ''' show list of tags '''
+
+    tags = Tag.query.all()
+
+    return render_template('tag_list.html', tags=tags)
